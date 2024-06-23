@@ -1,0 +1,4 @@
+/app/build/CMakeFiles/xmppclient.dir
+/app/build/CMakeFiles/edit_cache.dir
+/app/build/CMakeFiles/rebuild_cache.dir
+/app/build/CMakeFiles/xmppclient_autogen.dir

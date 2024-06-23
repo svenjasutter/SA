@@ -1,0 +1,48 @@
+% Template for SE Project software documentation
+% (c) Farhad Mehta 2021
+
+\documentclass[11pt, oneside, a4paper]{book}
+
+\input{custom}
+
+\hypersetup{
+    pdfauthor={Farhad Mehta, Thomas Kälin},
+    pdftitle={Template for SE Project software documentation},
+}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\frontmatter
+
+\input{title-page}
+\tableofcontents
+
+
+% \input{instructions}
+
+\mainmatter
+
+
+\part{Abstract}
+\input{01_abstract/abstract}
+
+\part{Product Documentation}
+\input{02_product-documentation/00_introduction}
+\input{02_product-documentation/00_stateoftheart}
+\input{02_product-documentation/01_requirements}
+\input{02_product-documentation/02_application}
+\input{02_product-documentation/03_architecture}
+\input{02_product-documentation/04_evaluation}
+
+% \part{Project Documentation}
+% \input{03_project-documentation/02_project-plan}
+% \input{03_project-documentation/04_personal-reports}
+% \input{03_project-documentation/05_meeting-minutes}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{alpha}
+\bibliography{bibliography}
+
+\end{document}

@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  qchat-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    command: bash -c "uvicorn frontend.asgi:application --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./frontend/:/code
+      - qChat_userfile:/user
+      - qChat_friends:/friends
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: frontend.settings
+    restart: on-failure
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`localhost`)"
+      - "traefik.http.routers.web.entrypoints=web"
+      - "traefik.http.routers.websecure.rule=Host(`localhost`)"
+      - "traefik.http.routers.websecure.entrypoints=websecure"
+      - "traefik.http.routers.websecure.tls=true"
+    networks:
+      - qChat-client-net
+    depends_on:
+      - mosquitto
+      - qchat-client
+      - qchat-server
+
+  qchat-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+    environment:
+      REBUILD: 1
+      REBUILD_KYBER: 0
+      TOR_BG: 1
+    volumes:
+      - ./client/client_torrc:/etc/tor/torrc
+      - ./client:/app
+      - ./kyber:/pqc/
+      - qChat_userfile:/user
+      - qChat_friends:/friends
+    command: /app/run.sh
+    networks:
+      - qChat-client-net
+    depends_on:
+      - mosquitto
+      - qchat-server
+
+  qchat-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.server
+    environment:
+      TOR_BG: 1
+    volumes:
+      - qChat_server-config:/etc/prosody
+      - qChat_server-data:/var/lib/tor
+      - qChat_prosody-data:/var/lib/prosody
+      - qChat_userfile:/user
+      - qChat_friends:/friends
+      - qChat_server-log:/log
+      - ./server/qChat_torrc:/etc/tor/torrc
+      - ./server:/server
+    networks:
+      - qChat-server-net
+    command: "./server/run.sh"
+    restart: unless-stopped
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    volumes:
+      - ./client/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    restart: on-failure
+    networks:
+      - qChat-client-net
+
+  redis:
+    image: redis:latest
+    networks:
+      - qChat-client-net
+
+  traefik:
+    image: traefik:latest
+    command:
+      - "--log.level=WARN"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.websecure.address=:443"
+      - "--experimental.http3=true"
+    ports:
+      - "80:80"
+      - "443:443/tcp"
+      - "443:443/udp"
+      # - "8080:8080" # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - qChat-client-net
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:
+  qChat_server-data:
+  qChat_prosody-data:
+  qChat_server-config:
+  qChat_server-log:
+  qChat_userfile:
+  qChat_friends:
+
+networks:
+  qChat-client-net:
+    driver: bridge
+  qChat-server-net:
+    driver: bridge

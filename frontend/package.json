@@ -1,0 +1,13 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "postcss.config.js",
+  "scripts": {
+    "build": "tailwindcss build -i src/styles.css -o static/css/output.css",
+    "watch": "tailwindcss build src/styles.css -o static/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

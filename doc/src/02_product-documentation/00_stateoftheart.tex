@@ -1,0 +1,33 @@
+\chapter{State of the Art}
+
+This chapter evaluates various messaging platforms, assessing their current encryption methods and preparedness for quantum computing developments.
+
+\section{Briar}
+    \begin{itemize}
+      \item Overview: Briar is tailored for secure communication, functioning over Wi-Fi, Bluetooth, and the internet, with robust offline capabilities \cite{briarproject}.
+      \item Pros: Briar utilizes the Tor network for enhanced anonymity, supports offline communication via Bluetooth and Wi-Fi, and prioritizes privacy and security.
+      \item Cons: Briar lacks implementation of post-quantum cryptography, posing potential risks in the face of quantum computing advancements.
+    \end{itemize}
+
+\section{Signal}
+    \begin{itemize}
+      \item Overview: Signal is known for robust encryption protocols, emphasizing user privacy and security \cite{signal}.
+      \item Pros: Features state-of-the-art end-to-end encryption, securing messages from sender to receiver using their own protocol, and is exploring post-quantum cryptography.
+      \item Cons: Signal's requirement of a phone number for registration may raise privacy concerns.
+    \end{itemize}
+
+\section{Others}
+    \begin{itemize}
+      \item Overview: Messaging apps such as Session, Threema, Telegram, Instagram DM, Snapchat, Viber, and WeChat vary in features and security levels.
+      \item Pros: Session offers decentralization and privacy enhancements, including no phone number requirement and routing messages over Loki Net. Threema and Telegram provide substantial security features.
+      \item Cons: Apps like Instagram DM, Snapchat, Viber, and WeChat may have vulnerabilities and privacy issues, particularly concerning data collection and user tracking.
+    \end{itemize}
+
+\section{P2P}
+For privacy-focused messaging apps, P2P technology is essential. It allows direct user connections, bypassing central servers, enhancing privacy, reducing data breach risks, and supporting decentralization. XMPP \cite{xmpp2023website} is an example of a secure, flexible and widely used P2P protocol.
+
+\section{Tor}
+Tor (The Onion Router) is crucial for messaging apps prioritizing anonymity and circumventing internet censorship. It anonymizes internet traffic through a global network of relays, concealing users locations and activities from network surveillance and analysis \cite{torproject2023website}.
+
+\section{Conclusion}
+This chapter has examined various messaging applications in terms of their cryptographic standards and their readiness for quantum computing. The recent integration of PQC by Signal illustrates the evolving nature of digital security. This analysis demonstrates the need for continued innovation in encryption technology to maintain the privacy and security of messages as technology advances.

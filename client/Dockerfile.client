@@ -1,0 +1,48 @@
+# Dockerfile for XMPP Client with Tor, MQTT Handler
+#
+FROM ubuntu:23.10
+
+ENV DEBIAN_FRONTEND=non-interactive \
+    QXMPP_TAG=v1.5.5 \
+    MQTT_C_TAG=v1.3.13 \
+    MQTT_CPP_TAG=v1.3.1
+
+RUN apt-get update && \
+    apt-get install -y \
+    tor \
+    qt6-base-dev \
+    git \
+    cmake \
+    make \
+    openssl \
+    libssl-dev \
+    g++
+
+# Clone and install QXmpp
+RUN git clone https://github.com/qxmpp-project/qxmpp.git && \
+    cd qxmpp && \
+    git checkout $QXMPP_TAG && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make -j$(nproc) && \
+    make install
+
+# Clone and install Paho MQTT C library and Paho MQTT C++ library
+RUN git clone https://github.com/eclipse/paho.mqtt.c.git && \
+    cd paho.mqtt.c && \
+    git checkout $MQTT_C_TAG && \
+    cmake -Bbuild -H. -DPAHO_WITH_SSL=ON && \
+    cmake --build build/ --target install && \
+    cd .. && \
+    git clone https://github.com/eclipse/paho.mqtt.cpp.git && \
+    cd paho.mqtt.cpp && \
+    git checkout $MQTT_CPP_TAG && \
+    cmake -Bbuild -H. -DPAHO_BUILD_DOCUMENTATION=OFF -DPAHO_BUILD_SAMPLES=OFF && \
+    cmake --build build/ --target install
+
+ENV CFLAGS="-I/usr/local/opt/openssl@1.1/include" \
+    NISTFLAGS="-I/usr/local/opt/openssl@1.1/include" \
+    LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+
+WORKDIR /app

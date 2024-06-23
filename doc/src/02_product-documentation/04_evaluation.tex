@@ -1,0 +1,25 @@
+\chapter{Evaluation}
+
+\section {Project Overview}
+
+\subsection{Achievement of Goals}
+In this project, our primary objective was to develop a secure peer-to-peer chat application using PQC for message encryption. We are pleased to report that we have successfully achieved this goal, as we have effectively demonstrated a working implementation of secure, quantum-resistant communication.
+
+\subsection{Areas for Improvement}
+We had originally planned to include features such as sending binary text files. However, due to time constraints, this functionality could not be implemented, as can be seen from the requirements evaluation in Section 3.2. Nevertheless, the proof of concept of integrating PQC into a peer-to-peer chat application was successfully demonstrated.
+
+Further improvements, particularly in the area of user management and local key storage, are required for practical application and improved user experience. Possible directions for further development include the integration key vaults or docker secrets as well as optimizing the communication between frontend and backend which is done with MQTT at the moment.
+
+\section {Client Performance and Efficiency}
+
+\subsection{Message Latency}
+Initial message delivery takes around 10 seconds. The first message involves setting up this circuit and establishing a secure, anonymous route, which takes time. Subsequent messages use the already established circuit, hence they are faster
+
+\subsection{Message Capacity} The application efficiently handles messages up to 100,000 characters. Larger messages, like 1 million characters, lead to a temporary service disruption. This issue has not been analysed in great detail. The log files indicate that this is related to the xmpp server which could not handle this vast amount of data. The message it self will be split into blocks by AES which causes alot of xmpp send requests to the server.
+
+There is a change to message dropping due to MQTT misbehaviour. XMPP will handle the messages correctly, but due to spontaneous reconnects in MQTT, a message could be dropped. The log indicates that this issue is only related to the frontend; we did not see any drops in the cli client itself.
+
+\section{User Perspective}
+
+\subsection{Functionality}
+The project functions as intended, with minor areas needing attention like the initial message delay and rare message drops. These issues do not detract from the overall success of the project.

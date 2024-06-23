@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+cd79d31daa7044bdb051bc4403a964a5 CMakeFiles/xmppclient_autogen

@@ -1,0 +1,19 @@
+# Dockerfile for Django Prosody XMPP Server with Tor
+#
+FROM ubuntu:23.10
+
+ENV DEBIAN_FRONTEND=non-interactive
+
+RUN apt-get update && \
+    apt-get install -y \
+    tor \
+    inotify-tools \
+    jq \
+    prosody \
+    lua5.4 \
+    liblua5.4-dev \
+    luarocks && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /run/prosody/ && \
+    prosodyctl install --server=https://modules.prosody.im/rocks/ mod_onions

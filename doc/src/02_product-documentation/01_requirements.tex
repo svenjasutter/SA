@@ -1,0 +1,35 @@
+\chapter{Requirements}
+
+\instructions{
+    Our vision of this project is a peer-to-peer chat application using a PQC algorithm for data protection.
+}
+
+
+\section {Requirements}
+
+\instructions{
+    The functional requirements should include:
+    \begin{itemize}
+        \item FR1: The application must allow users to securely send both text and binary files to their peers.
+        \item FR2: The application must provide a user registration process.
+        \item FR3: The application must integrate a mechanism that allows users to securely exchange keys or identifiers, enabling them to establish communication and send messages to each other.
+        \item FR4: The application must implement a secure method for key storage considering industry standards like PKI and HSM.
+        \item FR5: The application's implementation of post-quantum cryptography (PQC) should be modular, using a wrapper architecture. This design should allow for the easy replacement of specific PQC algorithms as they are still experimental.
+        \item FR6: Users should be able to activate or deactivate the use of post-quantum cryptography for their messages. When PQC is deactivated, the application should default to using standard encryption algorithms to secure the messages.
+
+    \end{itemize}
+}
+
+\section {Evaluation Requirements}
+
+\instructions{
+    \begin{itemize}
+        \item FR1: The user can send and receive text messages. The focus of the project was on the architecture and not the functionality of the client, so we did not implement sending binary files.
+        \item FR2: Once the user launches the client, the user registration process takes place automatically. The user receives their own onion address, certificate and PQC key pair.
+        \item FR3: To communicate with other users, the user must exchange their onion address and certificate. To enable PQC communication, the user must give the other user his public key.
+        \item FR4: The application stores the keys locally in a docker volume. Storing the keys in an HSM would be a possibility for further development. 
+        \item FR5: The PQC implementation is done in the C++ wrapper PQCWrapper.hpp. So it would be easy to replace the PQC algorithm.
+        \item FR6: A checkbox on the frontend allows the user to decide whether the messages should also be PQC encrypted.
+    \end{itemize}
+}
+

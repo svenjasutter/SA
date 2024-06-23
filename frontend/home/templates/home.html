@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}
+qChat
+{% endblock %}
+
+{% block content %}
+<div>
+    <label for="my-hostname">My Hostname:</label>
+    <textarea id="my-hostname" readonly></textarea>
+</div>
+<button id="fetch-my-hostname-button">Fetch My Hostname</button>
+
+<!-- Certificate Display Field -->
+<div>
+    <label for="my-certificate">My Certificate:</label>
+    <textarea id="my-certificate" readonly></textarea>
+</div>
+<button id="fetch-certificate-button">Fetch My Certificate</button>
+
+<!-- Public Key Display Field -->
+<div>
+    <label for="my-public-key">My Public Key:</label>
+    <textarea id="my-public-key" readonly></textarea>
+</div>
+<button id="fetch-public-key-button">Fetch My Public Key</button>
+
+<label for="pqc-toggle">Enable PQC:</label>
+<input type="checkbox" id="pqc-toggle" name="pqc-toggle">
+
+
+<input id="mqtt-friend-input" type="text" placeholder="Friends Hostname" />
+<input id="mqtt-certificate-input" type="text" placeholder="Certificate" />
+<button id="mqtt-certificate-button">Save Certificate</button>
+<br />
+
+<input id="mqtt-friend-pub-input" type="text" placeholder="Friends Hostname" />
+<input id="mqtt-pubkey-pqc-input" type="text" placeholder="PQC Public Key" />
+<button id="mqtt-pubkey-button">Save PQC Public Key</button>
+
+<br />
+<p>Messages:
+    <p />
+    <br />
+<div id="data-display" class="data-container">
+    <div id="mqtt-messages"></div>
+</div>
+<br />
+<input id="mqtt-recipient-input" type="text" placeholder="Recipient" />
+<input id="mqtt-message-input" type="text" placeholder="Type your message here" />
+<button id="mqtt-publish-button">Send Message</button>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+
+    let pqcEnabled = false;
+    const websocket = new WebSocket('wss://' + window.location.host + '/ws/mqtt/');
+
+    function sendMessage(kind, data) {
+        const messageData = {
+            emitter: 'frontend',
+            kind: kind,
+            message: data
+        };
+        console.log(messageData);
+        websocket.send(JSON.stringify(messageData));
+    }
+
+    function handleHostnameResponse(content) {
+        document.getElementById('my-hostname').value = content;
+    }
+
+    function handleCertificateResponse(content) {
+        document.getElementById('my-certificate').value = content;
+    }
+
+    function handlePublicKeyResponse(content) {
+        document.getElementById('my-public-key').value = content;
+    }
+
+    function displayMessage(sender, message) {
+        document.getElementById('mqtt-messages').innerHTML += `<p>${sender} : ${message}</p>`;
+    }
+
+    // Handle Incoming Messages
+    websocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        console.log("onmessage");
+        console.log(data);
+
+        if (data.emitter === "client" && data.kind === "manage") {
+            const manageData = data.manage;
+            switch (manageData.response) {
+                case "fetchCertificate":
+                    handleCertificateResponse(manageData.certificate);
+                    break;
+                case "fetchPQCPublicKey":
+                    handlePublicKeyResponse(manageData.pubkey);
+                    break;
+                case "fetchMyHostname":
+                    handleHostnameResponse(manageData.hostname);
+                    break;
+                default:
+                    console.log("Unknown manage response: ", manageData);
+                    break;
+            }
+        } else if (data.emitter === "client" && data.kind === "recv") {
+            const onionAddress = data.from.split('@')[1].split('/')[0];
+            displayMessage(onionAddress, data.message);
+        } else {
+            // Handle other kinds of messages
+            console.log("Unhandled message kind: ", data.kind);
+        }
+    }; websocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.getElementById('mqtt-publish-button').addEventListener('click', function () {
+        const recipient = document.getElementById('mqtt-recipient-input').value;
+        const messageBody = document.getElementById('mqtt-message-input').value;
+
+        sendMessage("send", {
+            to: recipient,
+            from: "myself",
+            messageBody: messageBody,
+            encryption: pqcEnabled ? "pqc" : "default"
+        });
+
+        displayMessage("me", messageBody);
+        document.getElementById('mqtt-message-input').value = '';
+    });
+
+    // Certificate and Public Key Handlers
+    document.getElementById('mqtt-certificate-button').addEventListener('click', handleCertificate);
+    document.getElementById('mqtt-pubkey-button').addEventListener('click', handlePublicKey);
+    document.getElementById('fetch-certificate-button').addEventListener('click', fetchCertificate);
+    document.getElementById('fetch-public-key-button').addEventListener('click', fetchPublicKey);
+    document.getElementById('fetch-my-hostname-button').addEventListener('click', fetchMyHostname);
+
+    function handleCertificate() {
+        const friendHostname = document.getElementById('mqtt-friend-input').value;
+        const certificate = document.getElementById('mqtt-certificate-input').value;
+
+        sendMessage("manage", {
+            emitter: "frontend",
+            manageRequest: {
+                request: "addCertificate",
+                friendHostname: friendHostname,
+                certificate: certificate
+            }
+        });
+
+        // Clear input fields
+        friendHostname.value = '';
+        certificate.value = '';
+    }
+
+    function handlePublicKey() {
+        const friendHostname = document.getElementById('mqtt-friend-pub-input').value;
+        const pubkey = document.getElementById('mqtt-pubkey-pqc-input').value;
+
+        sendMessage("manage", {
+            emitter: "frontend",
+            manageRequest: {
+                request: "addPQCPubkey",
+                friendHostname: friendHostname,
+                pubkey: pubkey
+            }
+        });
+
+        // Clear input fields
+        friendHostname.value = '';
+        pubkey.value = '';
+    }
+
+    function fetchMyHostname() {
+        sendMessage("manage", {
+            emitter: "frontend",
+            manageRequest: {
+                request: "fetchMyHostname"
+            }
+        });
+    }
+
+    function fetchCertificate() {
+        sendMessage("manage", {
+            emitter: "frontend",
+            manageRequest: {
+                request: "fetchCertificate"
+            }
+        });
+    }
+
+    function fetchPublicKey() {
+        sendMessage("manage", {
+            emitter: "frontend",
+            manageRequest: {
+                request: "fetchPQCPublicKey"
+            }
+        });
+    }
+
+    document.getElementById('pqc-toggle').addEventListener('change', function () {
+        pqcEnabled = this.checked;
+    });
+
+</script>
+<style>
+    #mqtt-messages {
+        height: 250px;
+        overflow-y: auto;
+    }
+</style>
+
+{% endblock %}

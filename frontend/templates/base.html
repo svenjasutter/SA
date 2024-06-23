@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="{% static 'css/global.css' %}" rel="stylesheet" >
+    <title>{% block title %}Default Title{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a class="text-xl font-bold hover:text-white" href="/">qChat</a>
+        <div class="nav-items">
+       </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        {% block content %}
+        <!-- Content will be inserted here by individual templates -->
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <span>© 2023 qChat - Svenja Sutter, Miles Strässle</span>
+    </footer>
+
+    {% block extra_scripts %}
+    <!-- Additional scripts can be added here if needed -->
+    {% endblock %}
+
+</body>
+
+</html>

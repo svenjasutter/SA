@@ -1,0 +1,5 @@
+HiddenServiceDir /var/lib/tor/prosody/
+HiddenServicePort 5222 127.0.0.1:5222
+HiddenServicePort 5269 127.0.0.1:5269
+SocksPort 9050
+DNSPort 9053

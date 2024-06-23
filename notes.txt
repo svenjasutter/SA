@@ -1,0 +1,32 @@
+- binary delete
+- reg describe
+
+- HSM - vrebeserungsideen
+- analyse - nicht alles implementiert
+
+- einfach instalieren, benutzen
+- performance
+- latest and greatest
+
+
+- begrüdung decisions
+- beschreibung diagramme
+
+- security layers: aufgaben, wieso PQC Schicht, wieos andere schicht?
+
+store now decrypt later, tor - NAT,
+
+
+Vergleich mit anderen systemen
+
+evaluation: datei weg
+
+
+
+digital ist in Ordnungx
+
+
+
+anwemndungsfälle
+
+

@@ -1,0 +1,84 @@
+\begin{thebibliography}{{EMQ}23}
+
+\bibitem[{Bri}23]{briarproject}
+{Briar Project}.
+\newblock Briar project - secure messaging, anywhere, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{Dja}23]{djangowebsite2023}
+{Django Software Foundation}.
+\newblock Django | the web framework for perfectionists with deadlines, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[eja]{ejabberddocs}
+{ejabberd Documentation}.
+\newblock \url{https://docs.ejabberd.im/}.
+\newblock Accessed: 2023-12-12.
+
+\bibitem[{EMQ}23]{emqx2023mqttguide}
+{EMQX}.
+\newblock The easiest guide to getting started with mqtt, 2023.
+\newblock Accessed: 2023-12-12.
+
+\bibitem[{Gee}23]{geeksforgeeks2023grovers}
+{GeeksforGeeks}.
+\newblock Introduction to grover's algorithm - geeksforgeeks, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{Mat}23]{matrix2023website}
+{Matrix.org}.
+\newblock Matrix | open network for secure, decentralized communication, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{Nat}22]{nist2022pqccandidates}
+{National Institute of Standards and Technology (NIST)}.
+\newblock Pqc candidates to be standardized and round 4, 2022.
+\newblock Accessed: 2023-12-12.
+
+\bibitem[{Nat}23]{nist2023postquantum}
+{National Institute of Standards and Technology}.
+\newblock Round 4 submissions - post-quantum cryptography, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{Pid}23]{pidginwebsite2023}
+{Pidgin}.
+\newblock Pidgin - universal chat client, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[pqc]{pqcrystals}
+{PQ-Crystals: Post-Quantum Cryptography from Lattices}.
+\newblock \url{https://pq-crystals.org/index.shtml}.
+\newblock Accessed: 2023-12-12.
+
+\bibitem[pro]{prosodydocs}
+{Prosody IM Documentation}.
+\newblock \url{https://prosody.im/doc}.
+\newblock Accessed: 2023-12-12.
+
+\bibitem[{Sig}23]{signal}
+{Signal}.
+\newblock Signal - private messenger, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{Tai}23]{tailwindcss2023}
+{Tailwind Labs Inc.}
+\newblock Tailwind css - a utility-first css framework for rapidly building
+  custom designs, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{The}23]{torproject2023entryguards}
+{The Tor Project}.
+\newblock Understanding entry guards, 2023.
+\newblock Accessed: 2023-12-12.
+
+\bibitem[{Tor}23]{torproject2023website}
+{Tor Project}.
+\newblock Tor project | anonymity online, 2023.
+\newblock Accessed: 2023-12-20.
+
+\bibitem[{XMP}23]{xmpp2023website}
+{XMPP Standards Foundation}.
+\newblock Xmpp | extensible messaging and presence protocol, 2023.
+\newblock Accessed: 2023-12-20.
+
+\end{thebibliography}
